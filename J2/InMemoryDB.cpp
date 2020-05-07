@@ -165,8 +165,9 @@ int main()
         }
         case sizeDic:
             cout << obj->getSize() << endl;
+            break;
         case nothing:
-            cout<<"wrong command!(hint: add - get - size - exit)."<<endl;
+            cout << "wrong command!(hint: add - get - size - exit)." << endl;
             break;
         }
     }
