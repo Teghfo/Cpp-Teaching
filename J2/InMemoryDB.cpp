@@ -6,7 +6,7 @@ enum string_code
     add,
     get,
     sizeDic,
-    exit,
+    ext,
     nothing
 };
 
@@ -19,7 +19,7 @@ string_code hashit(string const &inString)
     if (inString == "size")
         return sizeDic;
     if (inString == "exit")
-        return exit;
+        return ext;
     return nothing;
 }
 
@@ -32,22 +32,26 @@ public:
     BSTnode *before;
     friend class BST;
 };
+
 class BST
 {
 private:
     BSTnode *first;
     BSTnode *last;
+    int cnt;
 
 public:
     BST()
     {
         first = NULL;
         last = NULL;
+        cnt = 0;
     }
     void insert(string, string);
-    string search(string);
-    int size();
+    string search(string) const;
+    int size() const;
 };
+
 void BST::insert(string keyInput, string valueInput)
 {
 
@@ -62,11 +66,17 @@ void BST::insert(string keyInput, string valueInput)
         ptrSearchInsert = ptrSearchInsert->next;
     }
 
+    cnt++;
     BSTnode *newNode = new BSTnode;
     newNode->key = keyInput;
     newNode->value = valueInput;
+    newNode->next = NULL;
     if (first == NULL)
+    {
+
         first = last = newNode;
+        last->next = NULL;
+    }
     else
     {
         last->next = newNode;
@@ -74,18 +84,20 @@ void BST::insert(string keyInput, string valueInput)
         last = newNode;
     }
 };
-int BST::size()
+
+int BST::size() const
 {
-    int cnt = 0;
-    BSTnode *ptrSize = first;
-    while (ptrSize)
-    {
-        ptrSize = ptrSize->next;
-        cnt++;
-    }
+    // int cnt = 0;
+    // BSTnode *ptrSize = first;
+    // while (ptrSize)
+    // {
+    //     ptrSize = ptrSize->next;
+    //     cnt++;
+    // }
     return cnt;
 }
-string BST::search(string keyInput)
+
+string BST::search(string keyInput) const
 {
     string val = "";
     BSTnode *ptrSearch = first;
@@ -100,6 +112,7 @@ string BST::search(string keyInput)
     }
     return val;
 }
+
 class InMemoryDB
 {
 private:
@@ -115,11 +128,11 @@ public:
             instance = new InMemoryDB;
         return instance;
     }
-    string getValue(string key)
+    string getValue(string key) const
     {
         return bstDictObj.search(key);
     }
-    int getSize()
+    int getSize() const
     {
         return bstDictObj.size();
     }
@@ -147,7 +160,7 @@ int main()
 
         switch (hashit(token))
         {
-        case exit:
+        case ext:
             return 0;
         case get:
         {
